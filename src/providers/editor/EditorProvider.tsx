@@ -1,13 +1,14 @@
 import { useState } from "react";
-import { EditorContext, type ShapeData } from "./EditorContext";
+import { EditorContext, editorContextDefaults, type ShapeData } from "./EditorContext";
 
 export const EditorProvider = ({ children }: { children: React.ReactNode }) => {
-  const [shapes, setShapes] = useState<ShapeData[]>([]);
+  const [shapes, setShapes] = useState<ShapeData[]>(editorContextDefaults.shapes);
+  const [tempShape, setTShape] = useState<ShapeData | null>(editorContextDefaults.tempShape);
 
   const addShape = (shape: Partial<ShapeData>) => {
     setShapes(prev => [
       ...prev,
-      { id: crypto.randomUUID(), x: 0, y: 0, width: 1, height: 1, ...shape }
+      { id: crypto.randomUUID(), points: shape.points || [] }
     ]);
   };
 
@@ -17,8 +18,20 @@ export const EditorProvider = ({ children }: { children: React.ReactNode }) => {
     );
   };
 
+  const removeShape = (id: string) => {
+    setShapes(prev => prev.filter(s => s.id != id))
+  }
+
+  const setTempShape = (shape: Partial<ShapeData> | null) => {
+    const s: ShapeData | null = shape && {
+      id: 'temp',
+      points: shape.points ?? [],
+    };
+    setTShape(s);
+  }
+
   return (
-    <EditorContext.Provider value={{ shapes, addShape, updateShape }}>
+    <EditorContext.Provider value={{ shapes, addShape, updateShape, removeShape, tempShape, setTempShape }}>
       {children}
     </EditorContext.Provider>
   );
