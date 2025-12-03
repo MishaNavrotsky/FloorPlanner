@@ -1,7 +1,8 @@
 // App.tsx
 import { Stage } from "react-konva";
-import Grid from "./components/Grid/Grid";
+import Grid from "./components/Grid";
 import { useCanvasSize } from "./providers/canvas";
+import ShapesLayer from "./components/ShapesLayer";
 
 const CanvasRoot = () => {
   const { size } = useCanvasSize();
@@ -9,6 +10,7 @@ const CanvasRoot = () => {
   return (
     <Stage width={size.width} height={size.height} pixelRatio={1}>
       <Grid />
+      <ShapesLayer />
     </Stage>
   );
 };

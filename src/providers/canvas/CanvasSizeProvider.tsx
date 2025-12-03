@@ -33,7 +33,7 @@ export const CanvasSizeProvider = ({ children }: { children: React.ReactNode }) 
         overflow: "hidden",
       }}
     >
-      <CanvasSizeContext.Provider value={{size, viewport: { scale, setScale }, world: { width: size.width / scale, height: size.height / scale }}}>
+      <CanvasSizeContext.Provider value={{ size, viewport: { scale, setScale }, world: { width: size.width / scale, height: size.height / scale } }}>
         {size.width > 0 && children}
       </CanvasSizeContext.Provider>
     </div>

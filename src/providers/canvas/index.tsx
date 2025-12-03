@@ -1,2 +1,2 @@
-export { useCanvasSize, CanvasSizeContext } from './CanvasSizeContext'
-export { CanvasSizeProvider } from './CanvasSizeProvider'
+export * from './CanvasSizeContext'
+export * from './CanvasSizeProvider'
