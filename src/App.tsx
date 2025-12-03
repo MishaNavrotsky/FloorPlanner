@@ -1,12 +1,12 @@
-import { useState } from 'react'
-import './App.css'
+import { CanvasSizeProvider } from "./providers/canvas";
+import CanvasRoot from "./CanvasRoot";
 
-function App() {
+const App = () => {
   return (
-    <>
+    <CanvasSizeProvider>
+        <CanvasRoot />
+    </CanvasSizeProvider>
+  );
+};
 
-    </>
-  )
-}
-
-export default App
+export default App;
