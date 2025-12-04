@@ -8,7 +8,7 @@ export interface CanvasSize {
   },
   viewport: {
     scale: number,
-    setScale: (nextScale: number) => void;
+    setScale: (nextScale: number | ((scale: number) => number)) => void;
   },
   world: {
     width: number,

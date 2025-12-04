@@ -1,11 +1,12 @@
+import type { LineConfig } from "konva/lib/shapes/Line";
 import { useCanvasSize } from "../../providers/canvas";
 import { type ShapeData } from "../../providers/editor";
-import { Group, Line, Rect } from "react-konva";
-const Shape = ({ shape }: { shape: ShapeData }) => {
+import { Group, Line } from "react-konva";
+const Shape = ({ shape, lineConfig }: { shape: ShapeData, lineConfig?: Partial<LineConfig> }) => {
   const canvas = useCanvasSize();
   return (
     <Group id={shape.id}>
-      <Line points={shape.points.map(p => p * canvas.viewport.scale)} stroke={'black'} strokeWidth={1} closed />
+      <Line points={shape.points.map(p => p * canvas.viewport.scale)} {...lineConfig} />
     </Group>
   );
 }

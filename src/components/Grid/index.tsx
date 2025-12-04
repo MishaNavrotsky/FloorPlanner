@@ -20,8 +20,8 @@ const Grid = () => {
     return lines
   }, [canvasSize])
   return (
-    <Layer>
-      {gridLines.map((config) => <Line stroke={'#ddd'} strokeWidth={2} {...config}></Line>)}
+    <Layer >
+      {gridLines.map((config) => <Line stroke={'#e8eaffff'} strokeWidth={2} {...config}></Line>)}
     </Layer>
   );
 };

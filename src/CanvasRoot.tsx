@@ -10,7 +10,7 @@ const CanvasRoot = () => {
   const { onStageReady } = useControl();
 
   return (
-    <Stage width={size.width} height={size.height} ref={(node) => { node && onStageReady?.(node) }}>
+    <Stage width={size.width} height={size.height} ref={(node) => { node && onStageReady?.(node) }} style={{ backgroundColor: '#fbfeffff' }}>
       <Grid />
       <ShapesLayer />
     </Stage >

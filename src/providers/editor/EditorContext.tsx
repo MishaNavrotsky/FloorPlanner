@@ -21,7 +21,7 @@ export const editorContextDefaults: EditorContextValue = {
   updateShape(id, patch) { },
   removeShape(id) { },
 
-  tempShape: { id: 'temp', points: [10, 10, 20, 10, 20, 30, 10, 30] },
+  tempShape: null,
   setTempShape(shape) { },
 }
 
