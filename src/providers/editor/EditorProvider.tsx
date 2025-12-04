@@ -1,7 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { EditorContext, editorContextDefaults, type ShapeData } from "./EditorContext";
+import { useControl } from "../control";
 
 export const EditorProvider = ({ children }: { children: React.ReactNode }) => {
+  const { onClick, onDbClick, onMouseDown, onMouseMove, onMouseUp, onWheel } = useControl();
+  useEffect(() => {
+  }, [])
+
   const [shapes, setShapes] = useState<ShapeData[]>(editorContextDefaults.shapes);
   const [tempShape, setTShape] = useState<ShapeData | null>(editorContextDefaults.tempShape);
 
