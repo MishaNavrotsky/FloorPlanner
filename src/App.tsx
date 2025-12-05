@@ -1,17 +1,20 @@
-import { CanvasSizeProvider } from "./providers/canvas";
+import { CanvasSizeProvider } from "./providers/canvas/size";
 import CanvasRoot from "./CanvasRoot";
-import { EditorProvider } from "./providers/editor";
+import { CanvasShapesProvider } from "./providers/canvas/shapes";
 import { ControlProvider } from "./providers/control";
+import { ConfigProvider } from "./providers/config";
 
 const App = () => {
   return (
-    <CanvasSizeProvider>
-      <ControlProvider>
-        <EditorProvider>
-          <CanvasRoot />
-        </EditorProvider>
-      </ControlProvider>
-    </CanvasSizeProvider>
+    <ConfigProvider>
+      <CanvasSizeProvider>
+        <ControlProvider>
+          <CanvasShapesProvider>
+            <CanvasRoot />
+          </CanvasShapesProvider>
+        </ControlProvider>
+      </CanvasSizeProvider>
+    </ConfigProvider>
   );
 };
 

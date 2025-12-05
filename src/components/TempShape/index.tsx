@@ -1,8 +1,10 @@
 import { useEffect, useRef, useState } from "react";
-import { EditorContext, editorContextDefaults, type ShapeData } from "./EditorContext";
-import { useControl } from "../control";
-import { useCanvasSize } from "../canvas";
-import type { Vector2d } from "konva/lib/types";
+import { useControl } from "../../providers/control";
+import { useCanvasSize } from "../../providers/canvas/size";
+import { useCanvasShapes, type ShapeData } from "../../providers/canvas/shapes";
+import { type Vector2d } from "konva/lib/types";
+import Shape from "../Shape";
+import { useConfig } from "../../providers/config";
 
 function rectCornersFlat(p1: Vector2d, p2: Vector2d): number[] {
   return [
@@ -13,12 +15,13 @@ function rectCornersFlat(p1: Vector2d, p2: Vector2d): number[] {
   ];
 }
 
-export const EditorProvider = ({ children }: { children: React.ReactNode }) => {
-  const { onClick, onDbClick, onMouseDown, onMouseMove, onMouseUp, onWheel } = useControl();
+const TempShape = () => {
+  const { config } = useConfig();
+  const { onMouseDown, onMouseMove, onMouseUp } = useControl();
   const { viewport } = useCanvasSize();
+  const { addShape } = useCanvasShapes();
 
-  const [shapes, setShapes] = useState<ShapeData[]>(editorContextDefaults.shapes);
-  const [tempShape, setTShape] = useState<ShapeData | null>(editorContextDefaults.tempShape);
+  const [tempShape, setTShape] = useState<ShapeData | null>(null);
   const tempShapeRef = useRef<ShapeData['points'] | null>(null);
 
   const setTempShape = (shape: Partial<ShapeData> | null) => {
@@ -28,13 +31,6 @@ export const EditorProvider = ({ children }: { children: React.ReactNode }) => {
     };
     setTShape(s);
   }
-
-  const addShape = (shape: Partial<ShapeData>) => {
-    setShapes(prev => [
-      ...prev,
-      { id: crypto.randomUUID(), points: shape.points || [] }
-    ]);
-  };
 
   useEffect(() => {
     return onMouseDown((ev) => {
@@ -68,26 +64,10 @@ export const EditorProvider = ({ children }: { children: React.ReactNode }) => {
     });
   }, [viewport.scale])
 
-  useEffect(() => {
-    return onWheel((ev) => {
-      ev.evt.preventDefault();
-      viewport.setScale((scale) => scale - Math.sign(ev.evt.deltaY) * 1.1);
-    })
-  }, [])
-
-  const updateShape = (id: string, patch: Partial<ShapeData>) => {
-    setShapes(prev =>
-      prev.map(s => s.id === id ? { ...s, ...patch } : s)
-    );
-  };
-
-  const removeShape = (id: string) => {
-    setShapes(prev => prev.filter(s => s.id != id))
-  }
-
-  return (
-    <EditorContext.Provider value={{ shapes, addShape, updateShape, removeShape, tempShape, setTempShape }}>
-      {children}
-    </EditorContext.Provider>
-  );
+  return <>
+    {tempShape ? <Shape shape={tempShape} lineConfig={{ ...config.tempShapeLine, closed: true }} /> : null}
+  </>;
 };
+
+
+export default TempShape;

@@ -11,12 +11,14 @@
   },
   "dependencies": {
     "konva": "^10.0.12",
+    "lodash.merge": "^4.6.2",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-konva": "^19.2.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
+    "@types/lodash.merge": "^4.6.9",
     "@types/node": "^24.10.1",
     "@types/react": "^19.2.5",
     "@types/react-dom": "^19.2.3",

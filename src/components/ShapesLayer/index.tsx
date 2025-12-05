@@ -1,14 +1,17 @@
 import { Layer } from "react-konva";
-import { useEditor } from "../../providers/editor";
+import { useCanvasShapes } from "../../providers/canvas/shapes";
 import Shape from "../Shape";
+import TempShape from "../TempShape";
+import { useConfig } from "../../providers/config";
 
 const ShapesLayer = () => {
-  const editor = useEditor();
+  const { config } = useConfig()
+  const editor = useCanvasShapes();
   return <Layer>
-    {editor.shapes.map(sd => <Shape shape={sd} lineConfig={{
-      fill: '#fefefe', strokeWidth: 10, stroke: '#e8eaffff', closed: true
+    {editor.shapes.map(sd => <Shape key={sd.id} shape={sd} lineConfig={{
+      ...config.shapeLine, closed: true
     }} />)}
-    {editor.tempShape ? <Shape shape={editor.tempShape} lineConfig={{ stroke: '#4da3ff', strokeWidth: 1, dashEnabled: true, dash: [10], closed: true }} /> : null}
+    <TempShape />
   </Layer>
 }
 

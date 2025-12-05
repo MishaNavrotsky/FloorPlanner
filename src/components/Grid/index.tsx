@@ -1,10 +1,12 @@
 import type { LineConfig } from 'konva/lib/shapes/Line';
 import { useMemo } from 'react';
 import { Layer, Line } from 'react-konva';
-import { useCanvasSize } from '../../providers/canvas';
+import { useCanvasSize } from '../../providers/canvas/size';
+import { useConfig } from '../../providers/config';
 
 const Grid = () => {
   const canvasSize = useCanvasSize();
+  const { config } = useConfig();
 
   const gridLines = useMemo<LineConfig[]>(() => {
     const lines: LineConfig[] = [];
@@ -21,7 +23,7 @@ const Grid = () => {
   }, [canvasSize])
   return (
     <Layer >
-      {gridLines.map((config) => <Line stroke={'#e8eaffff'} strokeWidth={2} {...config}></Line>)}
+      {gridLines.map((cfg) => <Line {...config.gridLine} {...cfg}></Line>)}
     </Layer>
   );
 };
