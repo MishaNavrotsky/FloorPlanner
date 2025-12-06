@@ -2,7 +2,7 @@ import type { NodeConfig, KonvaEventObject, Node } from "konva/lib/Node";
 import type { Stage } from "konva/lib/Stage";
 import { createContext, useContext } from "react";
 
-export interface ControlContextEvents {
+export interface ControlEvents {
   onClick: (handler: (event: KonvaEventObject<MouseEvent, Node<NodeConfig>>) => void) => () => void;
   onDbClick: (handler: (event: KonvaEventObject<MouseEvent, Node<NodeConfig>>) => void) => () => void;
   onMouseDown: (handler: (event: KonvaEventObject<MouseEvent, Node<NodeConfig>>) => void) => () => void;
@@ -12,13 +12,13 @@ export interface ControlContextEvents {
   onWheel: (handler: (event: KonvaEventObject<WheelEvent, Node<NodeConfig>>) => void) => () => void;
 }
 
-export interface ControlContextValue extends ControlContextEvents {
+export interface ControlEventsContextValue extends ControlEvents {
   stageRef: React.RefObject<Stage | null>;
 
   onStageReady?: (stage: Stage) => void;
 }
 
-export const controlContextDefaults: ControlContextValue = {
+export const controlEventsContextDefaults: ControlEventsContextValue = {
   stageRef: { current: null },
 
   onStageReady(_) {
@@ -51,8 +51,8 @@ export const EVENT_NAMES = {
   ON_MOUSE_UP: 'mouseup',
   ON_MOUSE_MOVE: 'mousemove',
   ON_WHEEL: 'wheel',
-}
+} as const;
 
-export const ControlContext = createContext<ControlContextValue>(controlContextDefaults);
+export const ControlEventsContext = createContext<ControlEventsContextValue>(controlEventsContextDefaults);
 
-export const useControl = () => useContext(ControlContext);
+export const useControlEvents = () => useContext(ControlEventsContext);

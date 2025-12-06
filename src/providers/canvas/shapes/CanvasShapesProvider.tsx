@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { CanvasShapesContext, canvasShapesContextDefaults, type ShapeData } from "./CanvasShapesContext";
-import { useControl } from "../../control";
+import { useControlEvents } from "../../control/events";
 import { useCanvasSize } from "../size";
 
 export const CanvasShapesProvider = ({ children }: { children: React.ReactNode }) => {
-  const { onClick, onDbClick, onMouseDown, onMouseMove, onMouseUp, onWheel } = useControl();
+  const { onClick, onDbClick, onMouseDown, onMouseMove, onMouseUp, onWheel } = useControlEvents();
   const { viewport } = useCanvasSize();
 
   const [shapes, setShapes] = useState<ShapeData[]>(canvasShapesContextDefaults.shapes);

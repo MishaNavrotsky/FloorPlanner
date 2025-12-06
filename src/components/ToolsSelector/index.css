@@ -1,0 +1,50 @@
+.tools-selector {
+  background-color: #FFFFFF;
+  position: absolute;
+  top: 30px;
+  left: 30px;
+  height: 400px;
+  width: 60px;
+
+  padding: 12px 10px;
+  border-radius: 10px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+  border: 1px solid #E7EAFF;
+}
+
+.tools-selector-tool {
+  cursor: pointer;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+  user-select: none;
+  overflow: hidden;
+
+  background-color: #EEF3FF;
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.12);
+  color: #3B4CCA;
+}
+
+.tools-selector-tool:hover {
+  background-color: #D9E4FF;
+}
+
+.tools-selector-tool>svg {
+  height: 32px;
+  max-width: 32px;
+}
+
+.tools-selector-tool--active {
+  background-color: #D9E4FF;
+  box-shadow: 0 0 0 2px #3B4CCA inset;
+  color: #2E3AA8;
+}

@@ -1,10 +1,10 @@
 import { useCallback, useMemo, useRef } from "react";
-import { ControlContext, EVENT_NAMES } from "./ControlContext";
+import { ControlEventsContext, EVENT_NAMES } from "./ControlEventsContext";
 import type { Stage } from "konva/lib/Stage";
 import ControlEventBus from "./ControlEventBus";
 import type { KonvaEventListener } from "konva/lib/Node";
 
-export const ControlProvider = ({ children }: { children: React.ReactNode }) => {
+export const ControlEventsProvider = ({ children }: { children: React.ReactNode }) => {
   const stageRef = useRef<Stage>(null);
   const events = useMemo(() => new ControlEventBus(), [])
   const mappedEvents = useRef<KonvaEventListener<Stage, any>[]>([]);
@@ -21,7 +21,7 @@ export const ControlProvider = ({ children }: { children: React.ReactNode }) => 
   }, [])
 
   return (
-    <ControlContext.Provider value={{
+    <ControlEventsContext.Provider value={{
       stageRef,
       onStageReady,
       onClick(handler) {
@@ -44,6 +44,6 @@ export const ControlProvider = ({ children }: { children: React.ReactNode }) => 
       },
     }}>
       {children}
-    </ControlContext.Provider>
+    </ControlEventsContext.Provider>
   );
 };

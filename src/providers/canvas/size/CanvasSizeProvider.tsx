@@ -31,6 +31,7 @@ export const CanvasSizeProvider = ({ children }: { children: React.ReactNode }) 
         margin: 0,
         padding: 0,
         overflow: "hidden",
+        position: "relative",
       }}
     >
       <CanvasSizeContext.Provider value={{ size, viewport: { scale, setScale }, world: { width: size.width / scale, height: size.height / scale } }}>

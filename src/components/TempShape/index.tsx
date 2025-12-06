@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from "react";
-import { useControl } from "../../providers/control";
+import { useControlEvents } from "../../providers/control/events";
 import { useCanvasSize } from "../../providers/canvas/size";
 import { useCanvasShapes, type ShapeData } from "../../providers/canvas/shapes";
 import { type Vector2d } from "konva/lib/types";
 import Shape from "../Shape";
 import { useConfig } from "../../providers/config";
+import { TOOL_TYPE, useControlTools } from "../../providers/control/tools";
 
 function rectCornersFlat(p1: Vector2d, p2: Vector2d): number[] {
   return [
@@ -17,7 +18,8 @@ function rectCornersFlat(p1: Vector2d, p2: Vector2d): number[] {
 
 const TempShape = () => {
   const { config } = useConfig();
-  const { onMouseDown, onMouseMove, onMouseUp } = useControl();
+  const { selectedTool } = useControlTools();
+  const { onMouseDown, onMouseMove, onMouseUp } = useControlEvents();
   const { viewport } = useCanvasSize();
   const { addShape } = useCanvasShapes();
 
@@ -33,36 +35,37 @@ const TempShape = () => {
   }
 
   useEffect(() => {
-    return onMouseDown((ev) => {
-      const mouseDP = ev.target.getStage()?.getPointerPosition();
-      if (!mouseDP) return;
-      mouseDP.x /= viewport.scale;
-      mouseDP.y /= viewport.scale;
-      mouseDP.x = Math.floor(mouseDP.x);
-      mouseDP.y = Math.floor(mouseDP.y);
+    if (selectedTool === TOOL_TYPE.INSERT_RECT)
+      return onMouseDown((ev) => {
+        const mouseDP = ev.target.getStage()?.getPointerPosition();
+        if (!mouseDP) return;
+        mouseDP.x /= viewport.scale;
+        mouseDP.y /= viewport.scale;
+        mouseDP.x = Math.floor(mouseDP.x);
+        mouseDP.y = Math.floor(mouseDP.y);
 
-      const f = onMouseMove((ev) => {
-        const mouseP = ev.target.getStage()?.getPointerPosition();
-        if (!mouseP) return;
-        mouseP.x /= viewport.scale;
-        mouseP.y /= viewport.scale;
+        const f = onMouseMove((ev) => {
+          const mouseP = ev.target.getStage()?.getPointerPosition();
+          if (!mouseP) return;
+          mouseP.x /= viewport.scale;
+          mouseP.y /= viewport.scale;
 
-        mouseP.x = mouseP.x >= mouseDP.x ? Math.ceil(mouseP.x) : Math.floor(mouseP.x);
-        mouseP.y = mouseP.y >= mouseDP.y ? Math.ceil(mouseP.y) : Math.floor(mouseP.y);
+          mouseP.x = mouseP.x >= mouseDP.x ? Math.ceil(mouseP.x) : Math.floor(mouseP.x);
+          mouseP.y = mouseP.y >= mouseDP.y ? Math.ceil(mouseP.y) : Math.floor(mouseP.y);
 
-        tempShapeRef.current = rectCornersFlat(mouseDP, mouseP);
-        setTempShape({ points: [...tempShapeRef.current] })
+          tempShapeRef.current = rectCornersFlat(mouseDP, mouseP);
+          setTempShape({ points: [...tempShapeRef.current] })
+        });
+
+        const ff = onMouseUp(() => {
+          f();
+          ff();
+
+          setTShape(null);
+          tempShapeRef.current && addShape({ points: [...tempShapeRef.current] });
+        })
       });
-
-      const ff = onMouseUp(() => {
-        f();
-        ff();
-
-        setTShape(null);
-        tempShapeRef.current && addShape({ points: [...tempShapeRef.current] });
-      })
-    });
-  }, [viewport.scale])
+  }, [viewport.scale, selectedTool])
 
   return <>
     {tempShape ? <Shape shape={tempShape} lineConfig={{ ...config.tempShapeLine, closed: true }} /> : null}
