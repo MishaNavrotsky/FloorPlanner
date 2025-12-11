@@ -4,9 +4,10 @@ import { type ShapeData } from "../../providers/canvas/shapes";
 import { Group, Line } from "react-konva";
 const Shape = ({ shape, lineConfig }: { shape: ShapeData, lineConfig?: Partial<LineConfig> }) => {
   const canvas = useCanvasSize();
+
   return (
     <Group id={shape.id}>
-      <Line points={shape.points.map(p => p * canvas.viewport.scale)} {...lineConfig} />
+      <Line points={shape.points.map((p, n) => (p * canvas.viewport.scale) - canvas.viewport.offset[n % 2])} {...lineConfig} />
     </Group>
   );
 }

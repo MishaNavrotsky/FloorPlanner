@@ -40,22 +40,25 @@ const TempShape = () => {
         if (ev.evt.button !== 0) return;
         const mouseDP = ev.target.getStage()?.getPointerPosition();
         if (!mouseDP) return;
-        mouseDP.x /= viewport.scale;
-        mouseDP.y /= viewport.scale;
+
+        mouseDP.x = (mouseDP.x + viewport.offset[0]) / viewport.scale;
+        mouseDP.y = (mouseDP.y + viewport.offset[1]) / viewport.scale;
+
         mouseDP.x = Math.floor(mouseDP.x);
         mouseDP.y = Math.floor(mouseDP.y);
 
         const f = onMouseMove((ev) => {
           const mouseP = ev.target.getStage()?.getPointerPosition();
           if (!mouseP) return;
-          mouseP.x /= viewport.scale;
-          mouseP.y /= viewport.scale;
+
+          mouseP.x = (mouseP.x + viewport.offset[0]) / viewport.scale;
+          mouseP.y = (mouseP.y + viewport.offset[1]) / viewport.scale;
 
           mouseP.x = mouseP.x >= mouseDP.x ? Math.ceil(mouseP.x) : Math.floor(mouseP.x);
           mouseP.y = mouseP.y >= mouseDP.y ? Math.ceil(mouseP.y) : Math.floor(mouseP.y);
 
           tempShapeRef.current = rectCornersFlat(mouseDP, mouseP);
-          setTempShape({ points: [...tempShapeRef.current] })
+          setTempShape({ points: [...tempShapeRef.current] });
         });
 
         const ff = onMouseUp((ev) => {
@@ -67,7 +70,7 @@ const TempShape = () => {
           tempShapeRef.current && addShape({ points: [...tempShapeRef.current] });
         })
       });
-  }, [viewport.scale, selectedTool])
+  }, [viewport.scale, viewport.offset, selectedTool])
 
   return <>
     {tempShape ? <Shape shape={tempShape} lineConfig={{ ...config.tempShapeLine, closed: true }} /> : null}
