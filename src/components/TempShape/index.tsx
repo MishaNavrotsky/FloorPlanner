@@ -37,6 +37,7 @@ const TempShape = () => {
   useEffect(() => {
     if (selectedTool === TOOL_TYPE.INSERT_RECT)
       return onMouseDown((ev) => {
+        if (ev.evt.button !== 0) return;
         const mouseDP = ev.target.getStage()?.getPointerPosition();
         if (!mouseDP) return;
         mouseDP.x /= viewport.scale;
@@ -57,7 +58,8 @@ const TempShape = () => {
           setTempShape({ points: [...tempShapeRef.current] })
         });
 
-        const ff = onMouseUp(() => {
+        const ff = onMouseUp((ev) => {
+          if (ev.evt.button !== 0) return;
           f();
           ff();
 

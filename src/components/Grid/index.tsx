@@ -8,8 +8,6 @@ const Grid = () => {
   const canvasSize = useCanvasSize();
   const { config } = useConfig();
 
-  console.log(config.gridLine)
-
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const webGlGrid = useRef<WebGlGrid>(null);
 
@@ -25,14 +23,14 @@ const Grid = () => {
     if (!webGlGrid.current) return;
 
     webGlGrid.current.draw({
-      scale: canvasSize.viewport.scale, offset: [0, 0], resolution: [canvasSize.size.width, canvasSize.size.height]
+      scale: canvasSize.viewport.scale, offset: canvasSize.viewport.offset, resolution: [canvasSize.size.width, canvasSize.size.height]
     }, {
       lineColor: tinycolor2(config.gridLine.stroke?.toString()).toRgb(),
       lineWidth: config.gridLine.strokeWidth || 1,
       backgroundColor: tinycolor2(config.backgroundColor).toRgb(),
     }
     )
-  }, [canvasSize.size.width, canvasSize.size.height, canvasSize.viewport.scale, config])
+  }, [canvasSize.size.width, canvasSize.size.height, canvasSize.viewport.scale, canvasSize.viewport.offset[0], canvasSize.viewport.offset[1], config])
 
 
   return (
