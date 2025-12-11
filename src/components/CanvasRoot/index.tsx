@@ -13,7 +13,6 @@ const CanvasRoot = () => {
 
   return (
     <Stage width={size.width} height={size.height} ref={(node) => { node && onStageReady?.(node) }} style={{ backgroundColor: config.backgroundColor }}>
-      <Grid />
       <ShapesLayer />
     </Stage >
   );

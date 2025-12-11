@@ -1,30 +1,42 @@
-import type { LineConfig } from 'konva/lib/shapes/Line';
-import { useMemo } from 'react';
-import { Layer, Line } from 'react-konva';
+import { useEffect, useLayoutEffect, useRef } from 'react';
 import { useCanvasSize } from '../../providers/canvas/size';
 import { useConfig } from '../../providers/config';
+import WebGlGrid from './webglGrid';
+import tinycolor2 from 'tinycolor2';
 
 const Grid = () => {
   const canvasSize = useCanvasSize();
   const { config } = useConfig();
 
-  const gridLines = useMemo<LineConfig[]>(() => {
-    const lines: LineConfig[] = [];
-    for (let x = 0; x <= canvasSize.world.width; x++) {
-      const dx = x * canvasSize.viewport.scale;
-      lines.push({ points: [dx, 0, dx, canvasSize.size.height] })
-    }
+  console.log(config.gridLine)
 
-    for (let y = 0; y <= canvasSize.world.height; y++) {
-      const dy = y * canvasSize.viewport.scale
-      lines.push({ points: [0, dy, canvasSize.size.width, dy] })
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const webGlGrid = useRef<WebGlGrid>(null);
+
+  useLayoutEffect(() => {
+    const gl = canvasRef.current?.getContext("webgl2");
+    if (!gl) throw alert('Something gone wrong');
+
+    webGlGrid.current = new WebGlGrid(gl);
+    webGlGrid.current.init();
+  }, [])
+
+  useLayoutEffect(() => {
+    if (!webGlGrid.current) return;
+
+    webGlGrid.current.draw({
+      scale: canvasSize.viewport.scale, offset: [0, 0], resolution: [canvasSize.size.width, canvasSize.size.height]
+    }, {
+      lineColor: tinycolor2(config.gridLine.stroke?.toString()).toRgb(),
+      lineWidth: config.gridLine.strokeWidth || 1,
+      backgroundColor: tinycolor2(config.backgroundColor).toRgb(),
     }
-    return lines
-  }, [canvasSize])
+    )
+  }, [canvasSize.size.width, canvasSize.size.height, canvasSize.viewport.scale, config])
+
+
   return (
-    <Layer >
-      {gridLines.map((cfg) => <Line {...config.gridLine} {...cfg}></Line>)}
-    </Layer>
+    <canvas style={{ position: 'absolute', }} height={canvasSize.size.height} width={canvasSize.size.width} ref={canvasRef} />
   );
 };
 

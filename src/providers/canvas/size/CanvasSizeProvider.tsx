@@ -5,6 +5,7 @@ export const CanvasSizeProvider = ({ children }: { children: React.ReactNode }) 
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [size, setSize] = useState(canvasSizeContextDefaults.size);
   const [scale, setScale] = useState(canvasSizeContextDefaults.viewport.scale);
+  const [offset, setOffset] = useState(canvasSizeContextDefaults.viewport.offset);
 
   useLayoutEffect(() => {
     const el = wrapperRef.current;
@@ -34,7 +35,7 @@ export const CanvasSizeProvider = ({ children }: { children: React.ReactNode }) 
         position: "relative",
       }}
     >
-      <CanvasSizeContext.Provider value={{ size, viewport: { scale, setScale }, world: { width: size.width / scale, height: size.height / scale } }}>
+      <CanvasSizeContext.Provider value={{ size, viewport: { scale, setScale, offset, setOffset }, world: { width: size.width / scale, height: size.height / scale } }}>
         {size.width > 0 && children}
       </CanvasSizeContext.Provider>
     </div>

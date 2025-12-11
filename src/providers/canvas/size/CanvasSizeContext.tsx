@@ -8,6 +8,8 @@ export interface CanvasSize {
   },
   viewport: {
     scale: number,
+    offset: [number, number],
+    setOffset: (nextOffset: [number, number] | ((offset: [number, number]) => [number, number])) => void;
     setScale: (nextScale: number | ((scale: number) => number)) => void;
   },
   world: {
@@ -25,7 +27,9 @@ export const canvasSizeContextDefaults: CanvasSize = {
   },
   viewport: {
     scale: 15,
-    setScale(nextScale) { },
+    offset: [0, 0],
+    setOffset(_) { },
+    setScale(_) { },
   },
   world: {
     width: 0,

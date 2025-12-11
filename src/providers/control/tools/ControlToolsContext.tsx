@@ -13,7 +13,7 @@ export interface ControlToolsContextValue {
 }
 
 export const controlToolsContextDefaults: ControlToolsContextValue = {
-  selectedTool: TOOL_TYPE.SELECT,
+  selectedTool: TOOL_TYPE.INSERT_RECT,
   setSelectedTool(_) { },
 }
 
