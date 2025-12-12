@@ -33,8 +33,8 @@ export const CanvasSizeProvider = ({ children }: { children: React.ReactNode }) 
     setScaleOffsetOrigin((old) => {
       const newValue = typeof next === 'function' ? next(old) : next;
 
-      if (newValue.scale < 10 || newValue.scale > 150) {
-        newValue.scale = clamp(newValue.scale, 10, 150);
+      if (newValue.scale < 5 || newValue.scale > 500) {
+        newValue.scale = clamp(newValue.scale, 5, 500);
         return old;
       }
 
