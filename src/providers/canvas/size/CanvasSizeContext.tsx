@@ -1,5 +1,11 @@
 import { createContext, useContext } from "react";
 
+export type ScaleOffsetOrigin = {
+  scale: number,
+  offset: [number, number],
+  origin: [number, number],
+}
+
 export interface CanvasSize {
   size: {
     width: number,
@@ -9,8 +15,13 @@ export interface CanvasSize {
   viewport: {
     scale: number,
     offset: [number, number],
-    setOffset: (nextOffset: [number, number] | ((offset: [number, number]) => [number, number])) => void;
-    setScale: (nextScale: number | ((scale: number) => number)) => void;
+    origin: [number, number],
+    setScaleOffsetOrigin: (next: ScaleOffsetOrigin | ((next: ScaleOffsetOrigin) => ScaleOffsetOrigin)) => void;
+    ref: {
+      scale: number,
+      offset: [number, number],
+      origin: [number, number],
+    }
   },
   world: {
     width: number,
@@ -28,8 +39,13 @@ export const canvasSizeContextDefaults: CanvasSize = {
   viewport: {
     scale: 15,
     offset: [0, 0],
-    setOffset(_) { },
-    setScale(_) { },
+    origin: [0, 0],
+    ref: {
+      scale: 15,
+      offset: [0, 0],
+      origin: [0, 0],
+    },
+    setScaleOffsetOrigin: () => { },
   },
   world: {
     width: 0,

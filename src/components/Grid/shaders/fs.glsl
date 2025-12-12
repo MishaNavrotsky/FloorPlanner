@@ -6,6 +6,7 @@ out vec4 outColor;
 uniform vec2 uResolution;
 uniform float uScale;      // pixels per cell
 uniform vec2 uOffset;      // pan in pixels
+uniform vec2 uOrigin;      // origin in pixels
 
 uniform vec3 uLineColor;
 uniform float uLineWidth;

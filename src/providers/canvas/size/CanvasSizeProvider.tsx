@@ -1,11 +1,17 @@
-import { useRef, useLayoutEffect, useState } from "react";
-import { CanvasSizeContext, canvasSizeContextDefaults } from "./CanvasSizeContext";
+import { useRef, useLayoutEffect, useState, use } from "react";
+import { CanvasSizeContext, canvasSizeContextDefaults, type ScaleOffsetOrigin } from "./CanvasSizeContext";
+import clamp from "lodash.clamp";
 
 export const CanvasSizeProvider = ({ children }: { children: React.ReactNode }) => {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [size, setSize] = useState(canvasSizeContextDefaults.size);
-  const [scale, setScale] = useState(canvasSizeContextDefaults.viewport.scale);
-  const [offset, setOffset] = useState(canvasSizeContextDefaults.viewport.offset);
+  const [scaleOffsetOrigin, setScaleOffsetOrigin] = useState<ScaleOffsetOrigin>({
+    scale: canvasSizeContextDefaults.viewport.scale,
+    offset: canvasSizeContextDefaults.viewport.offset,
+    origin: canvasSizeContextDefaults.viewport.origin,
+  });
+
+  const ref = useRef({ ...canvasSizeContextDefaults.viewport.ref });
 
   useLayoutEffect(() => {
     const el = wrapperRef.current;
@@ -23,6 +29,22 @@ export const CanvasSizeProvider = ({ children }: { children: React.ReactNode }) 
     return () => observer.disconnect();
   }, []);
 
+  const setScaleOffsetOriginOverride = (next: ScaleOffsetOrigin | ((next: ScaleOffsetOrigin) => ScaleOffsetOrigin)) => {
+    setScaleOffsetOrigin((old) => {
+      const newValue = typeof next === 'function' ? next(old) : next;
+
+      if (newValue.scale < 10 || newValue.scale > 150) {
+        newValue.scale = clamp(newValue.scale, 10, 150);
+        return old;
+      }
+
+      ref.current.scale = newValue.scale;
+      ref.current.offset = newValue.offset;
+      ref.current.origin = newValue.origin;
+      return newValue;
+    });
+  };
+
   return (
     <div
       ref={wrapperRef}
@@ -35,7 +57,17 @@ export const CanvasSizeProvider = ({ children }: { children: React.ReactNode }) 
         position: "relative",
       }}
     >
-      <CanvasSizeContext.Provider value={{ size, viewport: { scale, setScale, offset, setOffset }, world: { width: size.width / scale, height: size.height / scale } }}>
+      <CanvasSizeContext.Provider value={{
+        size,
+        viewport: {
+          scale: scaleOffsetOrigin.scale,
+          offset: scaleOffsetOrigin.offset,
+          origin: scaleOffsetOrigin.origin,
+          ref: ref.current,
+          setScaleOffsetOrigin: setScaleOffsetOriginOverride,
+        },
+        world: { width: size.width / scaleOffsetOrigin.scale, height: size.height / scaleOffsetOrigin.scale }
+      }}>
         {size.width > 0 && children}
       </CanvasSizeContext.Provider>
     </div>

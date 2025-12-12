@@ -12,6 +12,7 @@ export default class WebGlGrid {
   private uResolution: WebGLUniformLocation | null = null;
   private uScale: WebGLUniformLocation | null = null;
   private uOffset: WebGLUniformLocation | null = null;
+  private uOrigin: WebGLUniformLocation | null = null;
 
   private uLineColor: WebGLUniformLocation | null = null;
   private uLineWidth: WebGLUniformLocation | null = null;
@@ -48,14 +49,14 @@ export default class WebGlGrid {
     this.uResolution = this.gl.getUniformLocation(this.program, "uResolution");
     this.uScale = this.gl.getUniformLocation(this.program, "uScale");
     this.uOffset = this.gl.getUniformLocation(this.program, "uOffset");
+    this.uOrigin = this.gl.getUniformLocation(this.program, "uOrigin");
 
     this.uLineColor = this.gl.getUniformLocation(this.program, "uLineColor");
     this.uLineWidth = this.gl.getUniformLocation(this.program, "uLineWidth");
     this.uBackgroundColor = this.gl.getUniformLocation(this.program, "uBackgroundColor");
   }
 
-  draw({ scale, offset, resolution }: { scale: number, offset: [number, number], resolution: [number, number] }, { backgroundColor, lineColor, lineWidth }: { backgroundColor: RGBA, lineColor: RGBA, lineWidth: number }) {
-
+  draw({ scale, offset, resolution, origin }: { scale: number, offset: [number, number], resolution: [number, number], origin: [number, number] }, { backgroundColor, lineColor, lineWidth }: { backgroundColor: RGBA, lineColor: RGBA, lineWidth: number }) {
     this.gl.viewport(0, 0, resolution[0], resolution[1]);
 
     this.gl.useProgram(this.program);
@@ -63,6 +64,7 @@ export default class WebGlGrid {
     this.gl.uniform2f(this.uResolution, resolution[0], resolution[1]);
     this.gl.uniform1f(this.uScale, scale);
     this.gl.uniform2f(this.uOffset, offset[0], offset[1]);
+    this.gl.uniform2f(this.uOrigin, origin[0], origin[1]);
 
     const bc = toFloatRGB(backgroundColor);
     const lc = toFloatRGB(lineColor);

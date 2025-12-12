@@ -23,14 +23,14 @@ const Grid = () => {
     if (!webGlGrid.current) return;
 
     webGlGrid.current.draw({
-      scale: canvasSize.viewport.scale, offset: canvasSize.viewport.offset, resolution: [canvasSize.size.width, canvasSize.size.height]
+      scale: canvasSize.viewport.scale, offset: canvasSize.viewport.offset, resolution: [canvasSize.size.width, canvasSize.size.height], origin: canvasSize.viewport.origin
     }, {
       lineColor: tinycolor2(config.gridLine.stroke?.toString()).toRgb(),
       lineWidth: config.gridLine.strokeWidth || 1,
       backgroundColor: tinycolor2(config.backgroundColor).toRgb(),
     }
     )
-  }, [canvasSize.size.width, canvasSize.size.height, canvasSize.viewport.scale, canvasSize.viewport.offset[0], canvasSize.viewport.offset[1], config])
+  }, [canvasSize.size.width, canvasSize.size.height, canvasSize.viewport.scale, canvasSize.viewport.offset[0], canvasSize.viewport.offset[1], canvasSize.viewport.origin, config])
 
 
   return (

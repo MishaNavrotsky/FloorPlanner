@@ -41,8 +41,8 @@ const TempShape = () => {
         const mouseDP = ev.target.getStage()?.getPointerPosition();
         if (!mouseDP) return;
 
-        mouseDP.x = (mouseDP.x + viewport.offset[0]) / viewport.scale;
-        mouseDP.y = (mouseDP.y + viewport.offset[1]) / viewport.scale;
+        mouseDP.x = (mouseDP.x + viewport.ref.offset[0]) / viewport.ref.scale;
+        mouseDP.y = (mouseDP.y + viewport.ref.offset[1]) / viewport.ref.scale;
 
         mouseDP.x = Math.floor(mouseDP.x);
         mouseDP.y = Math.floor(mouseDP.y);
@@ -51,8 +51,8 @@ const TempShape = () => {
           const mouseP = ev.target.getStage()?.getPointerPosition();
           if (!mouseP) return;
 
-          mouseP.x = (mouseP.x + viewport.offset[0]) / viewport.scale;
-          mouseP.y = (mouseP.y + viewport.offset[1]) / viewport.scale;
+          mouseP.x = (mouseP.x + viewport.ref.offset[0]) / viewport.ref.scale;
+          mouseP.y = (mouseP.y + viewport.ref.offset[1]) / viewport.ref.scale;
 
           mouseP.x = mouseP.x >= mouseDP.x ? Math.ceil(mouseP.x) : Math.floor(mouseP.x);
           mouseP.y = mouseP.y >= mouseDP.y ? Math.ceil(mouseP.y) : Math.floor(mouseP.y);
@@ -70,7 +70,7 @@ const TempShape = () => {
           tempShapeRef.current && addShape({ points: [...tempShapeRef.current] });
         })
       });
-  }, [viewport.scale, viewport.offset, selectedTool])
+  }, [selectedTool])
 
   return <>
     {tempShape ? <Shape shape={tempShape} lineConfig={{ ...config.tempShapeLine, closed: true }} /> : null}
