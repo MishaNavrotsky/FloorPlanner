@@ -76,7 +76,7 @@ const TempShape = () => {
   }, [selectedTool])
 
   return <>
-    {tempShape ? <ShapeLocal shape={tempShape} lineConfig={{ ...config.tempShapeLine, closed: true }} /> : null}
+    {tempShape ? <ShapeLocal shape={tempShape} lineConfig={{ ...config.tempShapeLine, closed: true, listening: false }} /> : null}
   </>;
 };
 
