@@ -1,18 +1,24 @@
 // App.tsx
 import { Stage } from "react-konva";
-import Grid from "../Grid";
 import { useCanvasSize } from "../../providers/canvas/size";
 import ShapesLayer from "../ShapesLayer";
 import { useControlEvents } from "../../providers/control/events";
-import { useConfig } from "../../providers/config";
 
 const CanvasRoot = () => {
-  const { config } = useConfig();
-  const { size } = useCanvasSize();
+  const { size, viewport } = useCanvasSize();
   const { onStageReady } = useControlEvents();
 
   return (
-    <Stage width={size.width} height={size.height} ref={(node) => { node && onStageReady?.(node) }} style={{ backgroundColor: config.backgroundColor }}>
+    <Stage
+      width={size.width}
+      height={size.height}
+      ref={(node) => { node && onStageReady?.(node) }}
+      offsetX={viewport.offset[0] / viewport.scale}
+      offsetY={viewport.offset[1] / viewport.scale}
+      strokeScaleEnabled={false}
+      scaleX={viewport.scale}
+      scaleY={viewport.scale}
+    >
       <ShapesLayer />
     </Stage >
   );

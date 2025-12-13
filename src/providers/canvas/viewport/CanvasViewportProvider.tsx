@@ -1,22 +1,12 @@
-import { useEffect, useRef, useState } from "react";
-import { CanvasShapesContext, canvasShapesContextDefaults, type ShapeData } from "./CanvasShapesContext";
+import { useEffect, useRef } from "react";
+import { CanvasViewportContext } from "./CanvasViewportContext";
 import { useControlEvents } from "../../control/events";
 import { useCanvasSize } from "../size";
 import type { Vector2d } from "konva/lib/types";
 
-export const CanvasShapesProvider = ({ children }: { children: React.ReactNode }) => {
-  const { onClick, onDbClick, onMouseDown, onMouseMove, onMouseUp, onWheel } = useControlEvents();
+export const CanvasViewportProvider = ({ children }: { children: React.ReactNode }) => {
+  const { onMouseDown, onMouseMove, onMouseUp, onWheel } = useControlEvents();
   const { viewport } = useCanvasSize();
-
-  const [shapes, setShapes] = useState<ShapeData[]>(canvasShapesContextDefaults.shapes);
-
-  const addShape = (shape: Partial<ShapeData>) => {
-    setShapes(prev => [
-      ...prev,
-      { id: crypto.randomUUID(), points: shape.points || [] }
-    ]);
-  };
-
 
   useEffect(() => {
     return onWheel((ev) => {
@@ -90,19 +80,9 @@ export const CanvasShapesProvider = ({ children }: { children: React.ReactNode }
     });
   }, []);
 
-  const updateShape = (id: string, patch: Partial<ShapeData>) => {
-    setShapes(prev =>
-      prev.map(s => s.id === id ? { ...s, ...patch } : s)
-    );
-  };
-
-  const removeShape = (id: string) => {
-    setShapes(prev => prev.filter(s => s.id != id))
-  }
-
   return (
-    <CanvasShapesContext.Provider value={{ shapes, addShape, updateShape, removeShape }}>
+    <CanvasViewportContext.Provider value={{}}>
       {children}
-    </CanvasShapesContext.Provider>
+    </CanvasViewportContext.Provider>
   );
 };

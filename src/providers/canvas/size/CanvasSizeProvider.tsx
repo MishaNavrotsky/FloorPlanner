@@ -1,4 +1,4 @@
-import { useRef, useLayoutEffect, useState, use } from "react";
+import { useRef, useLayoutEffect, useState } from "react";
 import { CanvasSizeContext, canvasSizeContextDefaults, type ScaleOffsetOrigin } from "./CanvasSizeContext";
 import clamp from "lodash.clamp";
 

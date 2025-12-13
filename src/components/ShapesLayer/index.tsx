@@ -1,16 +1,21 @@
 import { Layer } from "react-konva";
-import { useCanvasShapes } from "../../providers/canvas/shapes";
 import Shape from "../Shape";
 import TempShape from "../TempShape";
 import { useConfig } from "../../providers/config";
+import { useShapeIds } from "../../stores/shape";
 
 const ShapesLayer = () => {
   const { config } = useConfig()
-  const editor = useCanvasShapes();
+  const shapeIds = useShapeIds();
+  console.log("ShapesLayer render", shapeIds);
+
   return <Layer>
-    {editor.shapes.map(sd => <Shape key={sd.id} shape={sd} lineConfig={{
-      ...config.shapeLine, closed: true
-    }} />)}
+    {shapeIds.map(id =>
+      <Shape
+        key={id}
+        id={id}
+        lineConfig={config.shapeLine}
+      />)}
     <TempShape />
   </Layer>
 }

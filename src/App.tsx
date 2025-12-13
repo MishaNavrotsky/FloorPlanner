@@ -1,6 +1,6 @@
 import { CanvasSizeProvider } from "./providers/canvas/size";
 import CanvasRoot from "./components/CanvasRoot";
-import { CanvasShapesProvider } from "./providers/canvas/shapes";
+import { CanvasViewportProvider } from "./providers/canvas/viewport";
 import { ControlEventsProvider } from "./providers/control/events";
 import { ConfigProvider } from "./providers/config";
 import { ControlToolsProvider } from "./providers/control/tools";
@@ -13,11 +13,11 @@ const App = () => {
       <CanvasSizeProvider>
         <ControlEventsProvider>
           <ControlToolsProvider>
-            <CanvasShapesProvider>
+            <CanvasViewportProvider>
               <Grid />
               <CanvasRoot />
               <ToolsSelector />
-            </CanvasShapesProvider>
+            </CanvasViewportProvider>
           </ControlToolsProvider>
         </ControlEventsProvider>
       </CanvasSizeProvider>

@@ -4,7 +4,10 @@ import { createContext, useContext } from "react";
 export interface ConfigData {
   tempShapeLine: Partial<LineConfig>,
   shapeLine: Partial<LineConfig>,
-  gridLine: Partial<LineConfig>,
+  gridLine: {
+    stroke: string,
+    strokeWidth: number,
+  },
   backgroundColor: string,
 }
 
@@ -16,10 +19,10 @@ interface ConfigContextValue {
 export const configContextDefaults: ConfigContextValue = {
   config: {
     tempShapeLine: {
-      stroke: '#4da3ff', strokeWidth: 1, dashEnabled: true, dash: [10],
+      stroke: '#4da3ff', strokeWidth: 1, dashEnabled: true, dash: [10], closed: true,
     },
     shapeLine: {
-      fill: '#fefefe', strokeWidth: 10, stroke: '#e8eaffff',
+      fill: '#fefefe', strokeWidth: 10, stroke: '#e8eaffff', closed: true,
     },
     gridLine: {
       stroke: '#e8eaffff', strokeWidth: 2,

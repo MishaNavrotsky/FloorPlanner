@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import { useControlEvents } from "../../providers/control/events";
 import { useCanvasSize } from "../../providers/canvas/size";
-import { useCanvasShapes, type ShapeData } from "../../providers/canvas/shapes";
+import { shapeStore, type ShapeData } from "../../stores/shape";
 import { type Vector2d } from "konva/lib/types";
-import Shape from "../Shape";
+import { ShapeLocal } from "../Shape";
 import { useConfig } from "../../providers/config";
 import { TOOL_TYPE, useControlTools } from "../../providers/control/tools";
 
@@ -21,7 +21,6 @@ const TempShape = () => {
   const { selectedTool } = useControlTools();
   const { onMouseDown, onMouseMove, onMouseUp } = useControlEvents();
   const { viewport } = useCanvasSize();
-  const { addShape } = useCanvasShapes();
 
   const [tempShape, setTShape] = useState<ShapeData | null>(null);
   const tempShapeRef = useRef<ShapeData['points'] | null>(null);
@@ -67,13 +66,17 @@ const TempShape = () => {
           ff();
 
           setTShape(null);
-          tempShapeRef.current && addShape({ points: [...tempShapeRef.current] });
+          tempShapeRef.current && shapeStore.set({
+            id: crypto.randomUUID(),
+            points: [...tempShapeRef.current!],
+          });
+          tempShapeRef.current = null;
         })
       });
   }, [selectedTool])
 
   return <>
-    {tempShape ? <Shape shape={tempShape} lineConfig={{ ...config.tempShapeLine, closed: true }} /> : null}
+    {tempShape ? <ShapeLocal shape={tempShape} lineConfig={{ ...config.tempShapeLine, closed: true }} /> : null}
   </>;
 };
 
